@@ -1,11 +1,23 @@
 #pragma once
 #include "vec3.h"
 
+// struct vertex
+// {
+//     vec3 pos;
+//     vec2 tex;
+//     vec3 norm;
+// }
+
+struct vec2
+{
+    float x,y;
+};
+
 struct triangle
 {
-    vec3 a;
-    vec3 b;
-    vec3 c;
+    vec3 a,b,c;
+    vec3 n1, n2, n3;
+    vec2 d1, d2, d3;
 };
 
 struct b_b

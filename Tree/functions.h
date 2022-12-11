@@ -18,7 +18,7 @@ using Tree = boxnode *;
 
 struct TriangleRange
 {
-    triangle*begin;
+    triangle *begin;
     triangle *end;
 };
 
@@ -156,28 +156,40 @@ struct Intersection
     RayTriangleIntersection i;
 };
 
-std::optional<vec3> coordinate_of_intersection(Tree tr, Ray ray, int i){
+std::optional<triangle> coordinate_of_intersection(Tree tr, Ray ray, int i){
     if(std::holds_alternative<triangle>(tr->next)){
         if(happened(rayTriangleIntersection(ray, std::get<triangle>(tr->next)))){
-            return ray.point(rayTriangleIntersection(ray, std::get<triangle>(tr->next)).t);
+            return std::get<triangle>(tr->next);
         }
         else{
             return std::nullopt;
         }
     }
-    MaybeTwoIntersections iLeft = rayboxIntersection(ray, tr->next.left.box);
-    MaybeTwoIntersections iRight = rayboxIntersection(ray, std::get<boxnode::branches>(tr->next).right.box);
+    MaybeTwoIntersections iLeft = rayboxIntersection(ray, std::get<boxnode::branches>(tr->next).left->box);
+    MaybeTwoIntersections iRight = rayboxIntersection(ray, std::get<boxnode::branches>(tr->next).right->box);
 
-    intersections = rayboxIntersection(ray, tr->box);
-    int k = find_first_b_b(intersections, ray, i, tr->box);
-    if(k == 0){
-        return std:: nullopt;
-    }
-    if(k == 1){
-        return coordinate_of_intersection(std::get<boxnode::branches>(tr->next).left, ray, i);
-    }
-    if(k == 2){
-        return coordinate_of_intersection(std::get<boxnode::branches>(tr->next).right, ray, i);
+    // intersections = rayboxIntersection(ray, tr->box);
+    // int k = find_first_b_b(intersections, ray, i, tr->box);
+    // if(k == 0){
+    //     return std:: nullopt;
+    // }
+    // if(k == 1){
+    //     return coordinate_of_intersection(std::get<boxnode::branches>(tr->next).left, ray, i);
+    // }
+    // if(k == 2){
+    //     return coordinate_of_intersection(std::get<boxnode::branches>(tr->next).right, ray, i);
 
+    // }
+    
+    if(happened(iLeft)){
+        coordinate_of_intersection(std::get<boxnode::branches>(tr->next).right, ray, i);
+    }
+    if(happened(iRight)){
+        coordinate_of_intersection(std::get<boxnode::branches>(tr->next).left, ray, i);
+    }
+    if(happened(iLeft) and happened(iRight)){
+        if(coordinate_of_intersection(std::get<boxnode::branches>(tr->next).left, ray, i) == std::nullopt){
+            coordinate_of_intersection(std::get<boxnode::branches>(tr->next).right, ray, i);
+        }
     }
 }
