@@ -181,15 +181,24 @@ std::optional<triangle> coordinate_of_intersection(Tree tr, Ray ray, int i){
 
     // }
     
-    if(happened(iLeft)){
+    if(!happened(iLeft)){
         coordinate_of_intersection(std::get<boxnode::branches>(tr->next).right, ray, i);
     }
-    if(happened(iRight)){
+    if(!happened(iRight)){
         coordinate_of_intersection(std::get<boxnode::branches>(tr->next).left, ray, i);
     }
     if(happened(iLeft) and happened(iRight)){
-        if(coordinate_of_intersection(std::get<boxnode::branches>(tr->next).left, ray, i) == std::nullopt){
+        if(iLeft.tMin < iRight.tMin){
+            coordinate_of_intersection(std::get<boxnode::branches>(tr->next).left, ray, i);
+            if(coordinate_of_intersection(std::get<boxnode::branches>(tr->next).left, ray, i) == std::nullopt){
+                coordinate_of_intersection(std::get<boxnode::branches>(tr->next).right, ray, i);
+            }
+        }
+        else{
             coordinate_of_intersection(std::get<boxnode::branches>(tr->next).right, ray, i);
+            if(coordinate_of_intersection(std::get<boxnode::branches>(tr->next).right, ray, i) == std::nullopt){
+                coordinate_of_intersection(std::get<boxnode::branches>(tr->next).left, ray, i);
+            }
         }
     }
 }
