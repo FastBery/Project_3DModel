@@ -1,14 +1,7 @@
 #pragma once
+#include "../structs.h"
 #include <cmath>
-
-struct vec3
-{
-    float x, y, z;
-
-    float &operator[](unsigned int const i)       {return *(&x + i);}
-    float  operator[](unsigned int const i) const {return *(&x + i);}
-};
-
+/*
 inline vec3 operator+(vec3 const &v1, vec3 const &v2)
 {
     return
@@ -17,7 +10,7 @@ inline vec3 operator+(vec3 const &v1, vec3 const &v2)
         v1.y + v2.y,
         v1.z + v2.z,
     };
-}
+}*/
 inline vec3 operator-(vec3 const &v1, vec3 const &v2)
 {
     return
@@ -30,7 +23,7 @@ inline vec3 operator-(vec3 const &v1, vec3 const &v2)
 inline vec3 operator-(vec3 const &v)
 {
     return {-v.x, -v.y, -v.z};
-}
+}/*
 inline vec3 operator*(vec3 const &v, float const f)
 {
     return
@@ -39,7 +32,7 @@ inline vec3 operator*(vec3 const &v, float const f)
         v.y * f,
         v.z * f,
     };
-}
+}*/
 inline vec3 operator/(vec3 const &v, float const f)
 {
     return

@@ -1,4 +1,5 @@
 #pragma once
+#include "../structs.h"
 #include "vec3.h"
 
 // struct vertex
@@ -7,20 +8,6 @@
 //     vec2 tex;
 //     vec3 norm;
 // }
-
-struct vec2
-{
-    float x,y;
-};
-
-struct triangle
-{
-    vec3 a,b,c;
-    vec3 n;
-    vec2 d1, d2, d3;
-    vec3 albedo;
-    vec3 position;
-};
 
 struct b_b
 {
@@ -40,18 +27,6 @@ inline bool happened(MaybeTwoIntersections const i)
 {
     return i.tMin < i.tMax;
 }
-
-struct Ray
-{ 
-    vec3 origin;
-    vec3 direction;
-    vec3 point(float const t) const {return origin + direction * t;}
-};
-
-struct RayTriangleIntersection
-{
-    float t, p, q;
-};
 
 inline MaybeTwoIntersections rayboxIntersection(Ray const &ray, b_b const &box)
 {
