@@ -16,8 +16,9 @@ struct vec2
 struct triangle
 {
     vec3 a,b,c;
-    vec3 n1, n2, n3;
+    vec3 n;
     vec2 d1, d2, d3;
+    vec3 pos;
 };
 
 struct b_b
