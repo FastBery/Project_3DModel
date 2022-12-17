@@ -1,6 +1,6 @@
 #pragma once
+#include "../structs.h"
 #include "vec3.h"
-#include "ray.h"
 #include <algorithm>
 #include <cstdlib>
 #include <variant>
@@ -158,12 +158,14 @@ struct Intersection
     RayTriangleIntersection i;
 };
 
-std::optional<triangle> coordinate_of_intersection(Tree tr, Ray ray, int i){
+std::optional<intersection> coordinate_of_intersection(Tree tr, Ray ray, int i){
     if(std::holds_alternative<triangle>(tr->next)){
         if(happened(rayTriangleIntersection(ray, std::get<triangle>(tr->next)))){
-            triangle tr2 = std::get<triangle>(tr->next);
-            tr2.position = ray.point(rayTriangleIntersection(ray, std::get<triangle>(tr->next)).t);
-            return tr2;
+            //triangle tr2 = std::get<triangle>(tr->next);
+            intersection sect;
+            sect.tr = std::get<triangle>(tr->next);
+            sect.position = ray.point(rayTriangleIntersection(ray, std::get<triangle>(tr->next)).t);
+            return sect;
         }
         else{
             return std::nullopt;
