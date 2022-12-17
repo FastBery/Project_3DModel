@@ -18,7 +18,8 @@ struct triangle
     vec3 a,b,c;
     vec3 n;
     vec2 d1, d2, d3;
-    vec3 pos;
+    vec3 albedo;
+    vec3 position;
 };
 
 struct b_b
