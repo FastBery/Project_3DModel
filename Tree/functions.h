@@ -1,8 +1,10 @@
 #pragma once
 #include "vec3.h"
 #include "ray.h"
-#include <optional>
+#include <algorithm>
+#include <cstdlib>
 #include <variant>
+#include <optional>
 
 struct boxnode
 {
@@ -148,7 +150,7 @@ int find_first_b_b(MaybeTwoIntersections const intersections, Ray ray, int i, b_
     if(intersections.tMax == None.tMax and intersections.tMin == None.tMin){
         return 0;
     }
-}
+};
 
 struct Intersection
 {
@@ -159,7 +161,9 @@ struct Intersection
 std::optional<triangle> coordinate_of_intersection(Tree tr, Ray ray, int i){
     if(std::holds_alternative<triangle>(tr->next)){
         if(happened(rayTriangleIntersection(ray, std::get<triangle>(tr->next)))){
-            return std::get<triangle>(tr->next);
+            triangle tr2 = std::get<triangle>(tr->next);
+            tr2.position = ray.point(rayTriangleIntersection(ray, std::get<triangle>(tr->next)).t);
+            return tr2;
         }
         else{
             return std::nullopt;
@@ -201,4 +205,29 @@ std::optional<triangle> coordinate_of_intersection(Tree tr, Ray ray, int i){
             }
         }
     }
+};
+
+Tree cons(Tree left, b_b value, Tree right){
+    Tree a = static_cast<Tree>(std::malloc(sizeof(boxnode)));
+    a->box = value;
+    a->next = boxnode::branches({left, right});
+    return a;
+};
+
+Tree createTree(TriangleRange range){
+    if (range.end - range.begin == 1){
+        Tree node = cons(nullptr, triangle_to_b_b(*range.begin), nullptr);
+        node->next = *range.begin;
+        return node;
+    }
+
+    b_b box = array_to_one(range);
+
+    triangle *mid = sort_triangle0(range, find_max_side(box));
+    Tree right = createTree({range.begin, mid});
+    Tree left = createTree({mid + 1, range.end});
+    return cons(left, box, right);
 }
+
+// TriangleRange range_of_triangles;
+// int i = find_max_side(array_to_one(range_of_triangles));
