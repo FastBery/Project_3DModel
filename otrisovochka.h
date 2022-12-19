@@ -41,7 +41,7 @@ color shade(Ray r, Tree box, color pxcolor){
 	float lb = length(sect.position - sect.tr.a - sect.tr.b);
 	float la = length(sect.position - sect.tr.a - sect.tr.b);
 
-	vec3 norm = (sect.tr.n1 * la + sect.face.B.norm * lb + sect.face.C.norm * lc) / (la + lb + lc);
+	vec3 norm = (sect.tr.n1 * la + sect.tr.b.norm * lb + sect.tr.c.norm * lc) / (la + lb + lc);
 	ray shadow = {sect.position, normalize(light - sectpos)};
 
 	intersection shadowray = coordinate_of_intersection(box, shadow, i);
