@@ -1,6 +1,7 @@
 #pragma once
 #include "../structs.h"
 #include "vec3.h"
+#include "ray.h"
 #include <algorithm>
 #include <cstdlib>
 #include <variant>
@@ -233,3 +234,15 @@ Tree createTree(TriangleRange range){
 
 // TriangleRange range_of_triangles;
 // int i = find_max_side(array_to_one(range_of_triangles));
+
+//color
+
+inline color operator+(color const &c1, color const &c2){
+    return{u_char(c1.r + c2.r), u_char(c1.g + c2.b), u_char(c1.b + c2.b)};
+}
+inline color operator*(color const &c, float const &f){
+    return {u_char(c.r * f), u_char(c.g * f), u_char(c.b * f)};
+}
+inline color operator*(color const &c1, color const &c2){
+    return{u_char(c1.r * c2.r), u_char(c1.g * c2.g), u_char(c1.b * c2.b)};
+}

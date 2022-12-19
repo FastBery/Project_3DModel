@@ -10,6 +10,10 @@ struct vec2{
 	float x, y;
 };
 
+struct color{
+    unsigned char r, g, b;
+};
+
 struct triangle
 {
         vec3 a, b, c;
